@@ -117,12 +117,13 @@ const fetchData_Country = async () => {
   const getFlag = await fetch(
     "https://restcountries.eu/rest/v2/name/" + country
   );
+  console.log(response)
   if (response.ok && getFlag.ok) {
     const countryData = await response.json();
     const flagObject = await getFlag.json();
     let flag_url = flagObject.map((item) => item.flag);
     flag_url = flag_url[0];
-    console.log(flag_url);
+    // console.log(flag_url)
 
     var span = document.createElement("span");
     var img = document.createElement("img");
@@ -131,6 +132,7 @@ const fetchData_Country = async () => {
     img.setAttribute("src", flag_url);
     span.appendChild(img);
 
+    document.getElementById("countryFlag").innerHTML = '';
     document.getElementById("countryFlag").appendChild(span);
 
     const countryData_Parsed = {
@@ -139,7 +141,7 @@ const fetchData_Country = async () => {
       deaths: countryData.deaths.value / 1000000,
       lastUpdate: new Date(countryData.lastUpdate).toDateString(),
     };
-    console.log(countryData_Parsed);
+    // console.log(countryData_Parsed); 
     document.getElementById(
       "country_confirmed"
     ).textContent = countryData_Parsed.confirmed.toFixed(2);
@@ -194,6 +196,9 @@ const fetchData_Country = async () => {
     });
 
     return countryData_Parsed;
+  }
+  else{
+    alert("Country not found!");
   }
 };
 

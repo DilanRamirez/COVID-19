@@ -1,6 +1,43 @@
+h1 {
+  text-align: center !important;
+  color: #202529;
+}
+
 h3 {
   text-align: center;
   color: #7d7d7d;
+}
+
+h6 {
+  text-align: center;
+  color: #7d7d7d;
+}
+
+.footer {
+  width: 100%;
+  background-color: #d0d0d038;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.add-padding {
+  padding: 20px 0 20px 0;
+}
+
+.credits {
+  text-align: center;
+  color: #7d7d7d;
+  margin-bottom: 0px;
+}
+
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  width: 100%;
 }
 
 .card {
@@ -22,6 +59,7 @@ h3 {
   margin-left: auto !important;
   margin-right: auto !important;
   width: 90% !important;
+  z-index: 100 !important;
 }
 
 .card-img,
@@ -80,6 +118,10 @@ h3 {
 
 .add-margin-top {
   margin-top: 50px;
+}
+
+.add-max-margin-top {
+  margin-top: 70px;
 }
 
 .container {
@@ -176,6 +218,30 @@ h3 {
   /* margin-top: -50px !important; */
 }
 
+.title-img {
+  height: 150px;
+  width: 200px;
+}
+
+.title-content {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.img-content {
+  margin-top: 20px;
+  margin-left: 80px;
+}
+
+.bottom-picture {
+  height: 450px;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  margin-bottom: 20px;
+}
+
 @media (min-width: 1200px) {
   .container,
   .container-lg,
@@ -224,4 +290,34 @@ h3 {
   margin-left: auto !important;
   margin-right: auto !important;
   display: flex !important;
+}
+
+.bootstrap-table .fixed-table-container .table {
+  width: 100%;
+  margin-bottom: 0!important;
+  text-align: center;
+}
+
+.container {
+  height: 95% !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
