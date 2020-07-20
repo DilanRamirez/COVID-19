@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Tracker</title>
+    <link rel="stylesheet" href="./src/css/main.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.16/esri/css/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
+    <!-- ArcGIS -->
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://js.arcgis.com/4.16/"></script>
+   
+    <script src="./js/main.js"></script>
+    
+
+</head>
+<body>
+    <div class="container add-margin-top">
+        <div class="row">
+            <header class="header-search">
+                <input type="email" class="form-control" id="inputCountry" aria-describedby="emailHelp" placeholder="Enter Country">
+                <button type="submit" class="btn btn-primary" id="searchCountry">Submit</button>
+            </header>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="./src/img/flamenco-pandemic.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">COVID-19 Global Cases</h5>
+                            <p class="card-subtitle mb-2 text-muted">Confirmed: <span id="confirmed"></span>M</p>
+                            <p class="card-subtitle mb-2 text-muted">Recovered: <span id="recovered"></span>M</p>
+                            <p class="card-subtitle mb-2 text-muted">Deaths: <span id="deaths"></span>M</p>
+                            <p class="card-subtitle mb-2 text-muted">Last Update: <span id="lastUpdate"></span></p>
+                            <p class="credit text-muted">Illustration by <a href="https://dribbble.com/AnnaGolde">Anna Golde</a> from <a href="https://icons8.com/">Icons8</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5" id="unitedStatesChart">
+                    <div class="card-bar-chart">
+                        <canvas id="myBarChart" width="850" height="800"></canvas>
+                    </div>
+                </div>
+                <div class="col-5" id="countryChart">
+                    <div class="card-bar-chart">
+                        <canvas id="myBarChart" width="850" height="800"></canvas>
+                    </div>
+                </div>
+                <div class="col" id="countryCard">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-img-top us-img" id="countryFlag"></div>
+                        <div class="card-body">
+                          <h5 class="card-title">COVID-19 Cases</h5>
+                          <p class="card-subtitle mb-2 text-muted">Confirmed: <span id="country_confirmed"></span>M</p>
+                          <p class="card-subtitle mb-2 text-muted">Recovered: <span id="country_recovered"></span>M</p>
+                          <p class="card-subtitle mb-2 text-muted">Deaths: <span id="country_deaths"></span>M</p>
+                          <p class="card-subtitle mb-2 text-muted">Last Update: <span id="country_lastUpdate"></span></p>
+                          <p class="credit text-muted">Illustration by <a href="https://dribbble.com/AnnaGolde">Anna Golde</a> from <a href="https://icons8.com/">Icons8</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" id="unitedStates">
+                    <div class="card card-right" style="width: 18rem;">
+                        <img class="card-img-top us-img" src="https://restcountries.eu/data/usa.svg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">COVID-19 Cases</h5>
+                          <p class="card-subtitle mb-2 text-muted">Confirmed: <span id="USconfirmed"></span>M</p>
+                          <p class="card-subtitle mb-2 text-muted">Recovered: <span id="USrecovered"></span>M</p>
+                          <p class="card-subtitle mb-2 text-muted">Deaths: <span id="USdeaths"></span>M</p>
+                          <p class="card-subtitle mb-2 text-muted">Last Update: <span id="USlastUpdate"></span></p>
+                          <p class="credit text-muted">Illustration by <a href="https://restcountries.eu/">restcountries.eu</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-cards">
+            <div class="row card card-bar-graph">
+                <canvas id="myGlobalPieChart" class="add-margin-top" width="850" height="700"></canvas>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="./src/img/flamenco-pandemic.png" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">COVID-19 Global Cases</h5>
+                        <p class="card-subtitle mb-2 text-muted">Confirmed: <span id="confirmed"></span>M</p>
+                        <p class="card-subtitle mb-2 text-muted">Recovered: <span id="recovered"></span>M</p>
+                        <p class="card-subtitle mb-2 text-muted">Deaths: <span id="deaths"></span>M</p>
+                        <p class="card-subtitle mb-2 text-muted">Last Update: <span id="lastUpdate"></span></p>
+                        <p class="credit text-muted">Illustration by <a href="https://dribbble.com/AnnaGolde">Anna Golde</a> from <a href="https://icons8.com/">Icons8</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row card card-bar-graph">
+                <div class="col">
+                    <canvas id="myChart" class="add-margin-top" width="850" height="800"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="continer map-container">
+            <h3>Global Cases</h3>
+            <div class="row card-map">
+                <div id="viewDiv"></div>
+            </div>
+        </div>
+        <div>
+            <h3>Cases by States in the U.S.</h3>
+            <div class="row card card-table">
+                <table id="table" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-field="state">State</th>
+                            <th scope="col" data-field="cases">Cases</th>
+                            <th scope="col" data-field="todayCases">Today Cases</th>
+                            <th scope="col" data-field="deaths">deaths</th>
+                            <th scope="col" data-field="dateUploaded">Date Uploaded</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/Graphic"
+    ], function(Map, MapView, Graphic) {
+
+      var map = new Map({
+        basemap: "gray-vector"
+      });
+
+      var view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-6.463774, 30.415958],
+        zoom: 1
+      });
+
+    const mapCountry = async () => {
+        let response = await fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort");
+        if (response.ok) {
+            const countriesData = await response.json();
+
+            const coutriesInfo = {
+                recovered: countriesData.map((item) => item.recovered),
+                confirmed: countriesData.map((item) => item.active),
+                deaths: countriesData.map((item) => item.deaths),
+                countryRegion: countriesData.map((item) => item.country),
+                coords: countriesData.map((item) => item.countryInfo)
+            }  
+            
+
+            const coordinates = {
+                long: coutriesInfo.coords.map((coord) => coord.lat),
+                lat: coutriesInfo.coords.map((coord) => coord.long)
+            }
+            
+            for (var i = 0; i < coordinates.lat.length; i++) {
+
+                var point = {
+                    type: "point", // autocasts as new Point()
+                    longitude: coordinates.lat[i],
+                    latitude: coordinates.long[i]
+                }
+
+                var markerSymbol = {
+                    type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+                    color: "#ff9799",
+                    outline: { // autocasts as new SimpleLineSymbol()
+                        color: "#ff1235",
+                        width: 2
+                    }
+                };
+                var pointGraphic = new Graphic({
+                    geometry: point,
+                    symbol: markerSymbol,
+                    popupTemplate: {
+                        title: "COVID-19 Map View",
+                        content: [
+                            {
+                                type: "text",
+                                text: `There are ${
+                                    coutriesInfo.confirmed[i]
+                                } cases in ${
+                                    coutriesInfo.countryRegion[i]
+                                } with 
+                                                    ${
+                                    coutriesInfo.recovered[i]
+                                } recovered cases and ${
+                                    coutriesInfo.deaths[i]
+                                } cases.`
+                            },
+                        ]
+                    }
+                });
+                view.graphics.addMany([pointGraphic]);
+
+            }
+
+            }
+    };
+
+        mapCountry()
+    });
+
+    $("#countryCard").hide();
+    $("#countryChart").hide();
+        
+
+    $("#searchCountry").click(function() {
+        console.log("clicked")
+        fetchData_Country()
+        
+        $("#unitedStates").hide();
+        $("#countryCard").show();
+        $("#unitedStatesChart").show();
+    });
+
+    const fetchUSStates = async () => {
+    let response = await fetch("https://corona.lmao.ninja/v2/states?sort&yesterday");
+        if (response.ok) {
+            const USData = await response.json();
+            console.log(USData)
+
+            var $table = $('#table');
+
+            $(function () {
+                $('#table').bootstrapTable({
+                    data: USData
+                });
+            });
+        }
+    }
+
+    fetchUSStates()
+              
+
+        
+    </script>
+</body>
+</html>
