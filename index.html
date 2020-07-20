@@ -158,6 +158,7 @@
                     <p class="credits">Data from</p>
                     <p class="credits"><a href="https://github.com/mathdroid/covid-19-api"><b>mathdroid/covid-19-api</b> </a>  </p>
                     <p class="credits"><a href="covidtracking.com"><b>covidtracking.com</b></a></p>
+                    <p class="credits"><a href="https://corona.lmao.ninja/"><b>corona.lmao.ninja</b></a></p>
                     <p class="credits"><a href="restcountries.eu"><b>restcountries.eu</b></a></p><br>
                     <h6 class="credits">Made by Dilan Ramirez</h6>
                 </div>
@@ -168,131 +169,25 @@
     </div>
 
     <script>
-
-    require([
-      "esri/Map",
-      "esri/views/MapView",
-      "esri/Graphic"
-    ], function(Map, MapView, Graphic) {
-
-      var map = new Map({
-        basemap: "gray-vector"
-      });
-
-      var view = new MapView({
-        container: "viewDiv",
-        map: map,
-        center: [-6.463774, 30.415958],
-        zoom: 1
-      });
-
-    const mapCountry = async () => {
-        let response = await fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort");
-        if (response.ok) {
-            const countriesData = await response.json();
-
-            const coutriesInfo = {
-                recovered: countriesData.map((item) => item.recovered),
-                confirmed: countriesData.map((item) => item.active),
-                deaths: countriesData.map((item) => item.deaths),
-                countryRegion: countriesData.map((item) => item.country),
-                coords: countriesData.map((item) => item.countryInfo)
-            }  
-            
-
-            const coordinates = {
-                long: coutriesInfo.coords.map((coord) => coord.lat),
-                lat: coutriesInfo.coords.map((coord) => coord.long)
-            }
-            
-            for (var i = 0; i < coordinates.lat.length; i++) {
-
-                var point = {
-                    type: "point", // autocasts as new Point()
-                    longitude: coordinates.lat[i],
-                    latitude: coordinates.long[i]
-                }
-
-                var markerSymbol = {
-                    type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-                    color: "#ff9799",
-                    outline: { // autocasts as new SimpleLineSymbol()
-                        color: "#ff1235",
-                        width: 2
-                    }
-                };
-                var pointGraphic = new Graphic({
-                    geometry: point,
-                    symbol: markerSymbol,
-                    popupTemplate: {
-                        title: "COVID-19 Map View",
-                        content: [
-                            {
-                                type: "text",
-                                text: `There are ${
-                                    coutriesInfo.confirmed[i]
-                                } cases in ${
-                                    coutriesInfo.countryRegion[i]
-                                } with 
-                                                    ${
-                                    coutriesInfo.recovered[i]
-                                } recovered cases and ${
-                                    coutriesInfo.deaths[i]
-                                } cases.`
-                            },
-                        ]
-                    }
-                });
-                view.graphics.addMany([pointGraphic]);
-
-            }
-
-            }
-    };
-
-        mapCountry()
-    });
-
-    $("#countryCard").hide();
-    $("#countryChart").hide();
-    
-
-    $("#searchCountry").click(function() {
-        console.log("clicked")
-        fetchData_Country()
+        $("#countryCard").hide();
+        $("#countryChart").hide();
         
-        $("#unitedStates").hide();
-        $("#countryCard").show();
-        $("#unitedStatesChart").show();
-    });
 
-    $(document).keyup(function(event) {
-        if ($("#inputCountry").is(":focus")) {
-            if (event.keyCode == 13) {
-            $("#searchCountry").click();
-            } 
-        }
-    });
+        $("#searchCountry").click(function() {
+            fetchData_Country()
+            
+            $("#unitedStates").hide();
+            $("#countryCard").show();
+            $("#unitedStatesChart").show();
+        });
 
-    const fetchUSStates = async () => {
-    let response = await fetch("https://corona.lmao.ninja/v2/states?sort&yesterday");
-        if (response.ok) {
-            const USData = await response.json();
-
-            var $table = $('#table');
-
-            $(function () {
-                $('#table').bootstrapTable({
-                    data: USData
-                });
-            });
-        }
-    }
-
-    fetchUSStates()
-              
-
-        
+        $(document).keyup(function(event) {
+            if ($("#inputCountry").is(":focus")) {
+                if (event.keyCode == 13) {
+                $("#searchCountry").click();
+                } 
+            }
+        });
     </script>
 </body>
 </html>

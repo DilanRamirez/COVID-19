@@ -50,7 +50,6 @@ const fetchData = async () => {
 
 fetchData();
 
-
 const fetchDailyGlobalData = async () => {
   let response = await fetch(`${globalCases_url}/daily`);
   if (response.ok) {
@@ -117,7 +116,7 @@ const fetchData_Country = async () => {
   const getFlag = await fetch(
     "https://restcountries.eu/rest/v2/name/" + country
   );
-  console.log(response)
+  // console.log(response);
   if (response.ok && getFlag.ok) {
     const countryData = await response.json();
     const flagObject = await getFlag.json();
@@ -132,7 +131,7 @@ const fetchData_Country = async () => {
     img.setAttribute("src", flag_url);
     span.appendChild(img);
 
-    document.getElementById("countryFlag").innerHTML = '';
+    document.getElementById("countryFlag").innerHTML = "";
     document.getElementById("countryFlag").appendChild(span);
 
     const countryData_Parsed = {
@@ -141,7 +140,7 @@ const fetchData_Country = async () => {
       deaths: countryData.deaths.value / 1000000,
       lastUpdate: new Date(countryData.lastUpdate).toDateString(),
     };
-    // console.log(countryData_Parsed); 
+    // console.log(countryData_Parsed);
     document.getElementById(
       "country_confirmed"
     ).textContent = countryData_Parsed.confirmed.toFixed(2);
@@ -196,8 +195,7 @@ const fetchData_Country = async () => {
     });
 
     return countryData_Parsed;
-  }
-  else{
+  } else {
     alert("Country not found!");
   }
 };
@@ -273,3 +271,95 @@ const fetchUSData = async () => {
 
 fetchUSData();
 
+const fetchUSStates = async () => {
+  let response = await fetch(
+    "https://corona.lmao.ninja/v2/states?sort&yesterday"
+  );
+  if (response.ok) {
+    const USData = await response.json();
+
+    var $table = $("#table");
+
+    $(function () {
+      $("#table").bootstrapTable({
+        data: USData,
+      });
+    });
+  }
+};
+
+fetchUSStates();
+
+require(["esri/Map", "esri/views/MapView", "esri/Graphic"], function (
+  Map,
+  MapView,
+  Graphic
+) {
+  var map = new Map({
+    basemap: "gray-vector",
+  });
+
+  var view = new MapView({
+    container: "viewDiv",
+    map: map,
+    center: [-6.463774, 30.415958],
+    zoom: 1,
+  });
+
+  const mapCountry = async () => {
+    let response = await fetch(
+      "https://corona.lmao.ninja/v2/countries?yesterday&sort"
+    );
+    if (response.ok) {
+      const countriesData = await response.json();
+
+      const coutriesInfo = {
+        recovered: countriesData.map((item) => item.recovered),
+        confirmed: countriesData.map((item) => item.active),
+        deaths: countriesData.map((item) => item.deaths),
+        countryRegion: countriesData.map((item) => item.country),
+        coords: countriesData.map((item) => item.countryInfo),
+      };
+
+      const coordinates = {
+        long: coutriesInfo.coords.map((coord) => coord.lat),
+        lat: coutriesInfo.coords.map((coord) => coord.long),
+      };
+
+      for (var i = 0; i < coordinates.lat.length; i++) {
+        var point = {
+          type: "point", // autocasts as new Point()
+          longitude: coordinates.lat[i],
+          latitude: coordinates.long[i],
+        };
+
+        var markerSymbol = {
+          type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+          color: "#ff9799",
+          outline: {
+            // autocasts as new SimpleLineSymbol()
+            color: "#ff1235",
+            width: 2,
+          },
+        };
+        var pointGraphic = new Graphic({
+          geometry: point,
+          symbol: markerSymbol,
+          popupTemplate: {
+            title: "COVID-19 Map View",
+            content: [
+              {
+                type: "text",
+                text: `There are ${coutriesInfo.confirmed[i]} cases in ${coutriesInfo.countryRegion[i]} with 
+                       ${coutriesInfo.recovered[i]} recovered cases and ${coutriesInfo.deaths[i]} cases.`,
+              },
+            ],
+          },
+        });
+        view.graphics.addMany([pointGraphic]);
+      }
+    }
+  };
+
+  mapCountry();
+});
