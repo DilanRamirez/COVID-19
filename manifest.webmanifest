@@ -1,0 +1,26 @@
+{
+  "name": "COVID-19 App Tracker by Dilan Ramirez",
+  "short_name": "COVID-19 Tracker",
+  "start_url": "index.html",
+  "scope": ".",
+  "icons": [
+    {
+      "src": "/icons/virus1x.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/virus2x.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/virus3x.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000",
+  "background_color": "#fff",
+  "display": "standalone"
+}
