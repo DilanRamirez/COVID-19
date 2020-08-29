@@ -1,193 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>COVID-19 Tracker</title>
     <link rel="stylesheet" href="./src/css/main.css" />
-    <link rel="stylesheet" href="https://js.arcgis.com/4.16/esri/css/main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
-    <!-- ArcGIS -->
-    
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.16/esri/css/main.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css"
+    />
+    <!-- ArcGIS -->
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://js.arcgis.com/4.16/"></script>
-   
-    <script src="./js/main.js"></script>
-    
 
-</head>
-<body>
+    <script src="./js/main.js"></script>
+  </head>
+  <body>
     <div class="container add-margin-top">
-        <div class="card title title-content"> 
-            <div class="row">
-                <div class="col">
-                    <div class="img-content">
-                        <img class="title-img" src="./src/img/pale-doctor.png">
-                        <p class="credit">Illustration by <a href="https://dribbble.com/chizhikoff">Aleksey Chizhikov</a> from <a href="https://icons8.com/">Icons8</a>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <h1 class="add-max-margin-top">COVID-19 App Tracker</h1>
-                </div>
-                
-            </div>
+      <div class="card title title-content">
+        <div class="img-content">
+          <img class="title-img" src="./src/img/pale-doctor.png" />
+          <p class="credit">
+            Illustration by
+            <a href="https://dribbble.com/chizhikoff">Aleksey Chizhikov</a>
+            from <a href="https://icons8.com/">Icons8</a>
+          </p>
         </div>
-        
+        <h1 class="add-max-margin-top title-font">COVID-19 App Tracker</h1>
+      </div>
+
+      <div class="row">
+        <header class="header-search">
+          <input
+            type="email"
+            class="form-control"
+            id="inputCountry"
+            aria-describedby="emailHelp"
+            placeholder="Search Country"
+          />
+          <button type="submit" class="btn btn-primary" id="searchCountry">
+            Search
+          </button>
+        </header>
+      </div>
+      <div class="container-fluid">
+        <h3 class="add-margin-top">Cases by Country</h3>
         <div class="row">
-            <header class="header-search">
-                <input type="email" class="form-control" id="inputCountry" aria-describedby="emailHelp" placeholder="Search Country">
-                <button type="submit" class="btn btn-primary" id="searchCountry">Search</button>
-            </header>
+          <div class="col">
+            <div class="card" style="width: 18rem">
+              <img
+                class="card-img-top"
+                src="./src/img/flamenco-pandemic.png"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">COVID-19 Global Cases</h5>
+                <p class="card-subtitle mb-2 text-muted">
+                  Confirmed: <b><span id="confirmed"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Recovered: <b><span id="recovered"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Deaths: <b><span id="deaths"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Last Update: <b><span id="lastUpdate"></span></b>
+                </p>
+                <p class="credit text-muted">
+                  Illustration by
+                  <a href="https://dribbble.com/AnnaGolde">Anna Golde</a> from
+                  <a href="https://icons8.com/">Icons8</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-5" id="unitedStatesChart">
+            <div class="card-bar-chart">
+              <canvas id="myBarChart" width="850" height="800"></canvas>
+            </div>
+          </div>
+          <div class="col-5" id="countryChart">
+            <div class="card-bar-chart">
+              <canvas id="myBarChart" width="850" height="800"></canvas>
+            </div>
+          </div>
+          <div class="col" id="countryCard">
+            <div class="card" style="width: 18rem">
+              <div class="card-img-top us-img" id="countryFlag"></div>
+              <div class="card-body">
+                <h5 class="card-title">COVID-19 Cases</h5>
+                <p class="card-subtitle mb-2 text-muted">
+                  Confirmed: <b><span id="country_confirmed"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Recovered: <b><span id="country_recovered"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Deaths: <b><span id="country_deaths"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Last Update: <b><span id="country_lastUpdate"></span></b>
+                </p>
+                <p class="credit text-muted">
+                  Illustration by
+                  <a href="https://restcountries.eu/">restcountries.eu</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col" id="unitedStates">
+            <div class="card card-right" style="width: 18rem">
+              <img
+                class="card-img-top us-img"
+                src="https://restcountries.eu/data/usa.svg"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">COVID-19 Cases</h5>
+                <p class="card-subtitle mb-2 text-muted">
+                  Confirmed: <b><span id="USconfirmed"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Recovered: <b><span id="USrecovered"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Deaths: <b><span id="USdeaths"></span>M</b>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">
+                  Last Update: <b><span id="USlastUpdate"></span></b>
+                </p>
+                <p class="credit text-muted">
+                  Illustration by
+                  <a href="https://restcountries.eu/">restcountries.eu</a>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="container-fluid">
-            <h3 class="add-margin-top">Cases by Country</h3>
-            <div class="row">
-                <div class="col">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="./src/img/flamenco-pandemic.png" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">COVID-19 Global Cases</h5>
-                            <p class="card-subtitle mb-2 text-muted">Confirmed: <b><span id="confirmed"></span>M</b></p>
-                            <p class="card-subtitle mb-2 text-muted">Recovered: <b><span id="recovered"></span>M</b></p>
-                            <p class="card-subtitle mb-2 text-muted">Deaths: <b><span id="deaths"></span>M</b></p>
-                            <p class="card-subtitle mb-2 text-muted">Last Update: <b><span id="lastUpdate"></span></b></p>
-                            <p class="credit text-muted">Illustration by <a href="https://dribbble.com/AnnaGolde">Anna Golde</a> from <a href="https://icons8.com/">Icons8</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-5" id="unitedStatesChart">
-                    <div class="card-bar-chart">
-                        <canvas id="myBarChart" width="850" height="800"></canvas>
-                    </div>
-                </div>
-                <div class="col-5" id="countryChart">
-                    <div class="card-bar-chart">
-                        <canvas id="myBarChart" width="850" height="800"></canvas>
-                    </div>
-                </div>
-                <div class="col" id="countryCard">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-img-top us-img" id="countryFlag"></div>
-                        <div class="card-body">
-                          <h5 class="card-title">COVID-19 Cases</h5>
-                          <p class="card-subtitle mb-2 text-muted">Confirmed: <b><span id="country_confirmed"></span>M</b></p>
-                          <p class="card-subtitle mb-2 text-muted">Recovered: <b><span id="country_recovered"></span>M</b></p>
-                          <p class="card-subtitle mb-2 text-muted">Deaths: <b><span id="country_deaths"></span>M</b></p>
-                          <p class="card-subtitle mb-2 text-muted">Last Update: <b><span id="country_lastUpdate"></span></b></p>
-                          <p class="credit text-muted">Illustration by <a href="https://restcountries.eu/">restcountries.eu</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" id="unitedStates">
-                    <div class="card card-right" style="width: 18rem;">
-                        <img class="card-img-top us-img" src="https://restcountries.eu/data/usa.svg" alt="Card image cap">
-                        <div class="card-body">
-                          <h5 class="card-title">COVID-19 Cases</h5>
-                          <p class="card-subtitle mb-2 text-muted">Confirmed: <b><span id="USconfirmed"></span>M</b></p>
-                          <p class="card-subtitle mb-2 text-muted">Recovered: <b><span id="USrecovered"></span>M</b></p>
-                          <p class="card-subtitle mb-2 text-muted">Deaths: <b><span id="USdeaths"></span>M</b></p>
-                          <p class="card-subtitle mb-2 text-muted">Last Update: <b><span id="USlastUpdate"></span></b></p>
-                          <p class="credit text-muted">Illustration by <a href="https://restcountries.eu/">restcountries.eu</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <h3>Global Statistics</h3>
+      <div class="container-cards">
+        <div class="row card card-bar-graph">
+          <canvas
+            id="myGlobalPieChart"
+            class="add-margin-top margin-top-mobile"
+            width="850"
+            height="800"
+          ></canvas>
         </div>
-        <h3>Global Statistics</h3>
-        <div class="container-cards">
-            <div class="row card card-bar-graph">
-                <canvas id="myGlobalPieChart" class="add-margin-top" width="850" height="800"></canvas>
+        <div class="col-4">
+          <div class="card" style="width: 18rem">
+            <img
+              class="card-img-top"
+              src="./src/img/gummy-wash-your-hands.png"
+              alt="Card image cap"
+            />
+            <div class="card-body">
+              <h4 class="card-title">Remember</h4>
+              <ul>
+                <li>Clean your hands often.</li>
+                <li>Clean and disinfect frequently touched objects.</li>
+                <li>Avoid close contact with people who are sick.</li>
+                <li>Practice social distancing.</li>
+              </ul>
+              <p class="credit">
+                Illustration by
+                <a
+                  href="https://iconos8.es/illustrations/author/5e96a99001d036001976f998"
+                  >Vijay Verma</a
+                >
+                from <a href="https://icons8.com/">Icons8</a>
+              </p>
             </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="./src/img/gummy-wash-your-hands.png" alt="Card image cap">
-                    <div class="card-body">
-                        <h4 class="card-title">Remember</h4>
-                        <ul>
-                            <li>Clean your hands often.</li>
-                            <li>Clean and disinfect frequently touched objects.</li>
-                            <li>Avoid close contact with people who are sick.</li>
-                            <li>Practice social distancing.</li>
-                        </ul>
-                        <p class="credit">Illustration by <a href="https://iconos8.es/illustrations/author/5e96a99001d036001976f998">Vijay Verma</a> from <a href="https://icons8.com/">Icons8</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="row card card-bar-graph">
-                <div class="col">
-                    <canvas id="myChart" class="add-margin-top" width="850" height="900"></canvas>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="continer map-container">
-            <h3>Map Tracker</h3>
-            <div class="row card-map">
-                
-                <div id="viewDiv"></div>
-            </div>
+        <div class="row card card-bar-graph">
+          <div class="col">
+            <canvas
+              id="myChart"
+              class="add-margin-top"
+              width="850"
+              height="900"
+            ></canvas>
+          </div>
         </div>
-        <div>
-            <h3>Cases in the U.S. By States</h3>
-            <div class="row card card-table">
-                <table id="table" class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col" data-field="state">State</th>
-                            <th scope="col" data-field="cases">Cases</th>
-                            <th scope="col" data-field="todayCases">Today Cases</th>
-                            <th scope="col" data-field="deaths">deaths</th>
-                            <!-- <th scope="col" data-field="dateUploaded">Date Uploaded</th> -->
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+      </div>
+      <div class="continer map-container">
+        <h3>Map Tracker</h3>
+        <div class="row card-map">
+          <div id="viewDiv"></div>
         </div>
-        <img src="./src/img/info.png" class="bottom-picture">
-        <footer>
-            <div class="footer">
-                <div class="add-padding">
-                    <p class="credits">Data from</p>
-                    <p class="credits"><a href="https://github.com/mathdroid/covid-19-api"><b>mathdroid/covid-19-api</b> </a>  </p>
-                    <p class="credits"><a href="covidtracking.com"><b>covidtracking.com</b></a></p>
-                    <p class="credits"><a href="https://corona.lmao.ninja/"><b>corona.lmao.ninja</b></a></p>
-                    <p class="credits"><a href="restcountries.eu"><b>restcountries.eu</b></a></p><br>
-                    <h6 class="credits">Made by Dilan Ramirez</h6>
-                </div>
-                
-            </div>
-        </footer>
-        
+      </div>
+      <div>
+        <h3>Cases in the U.S. By States</h3>
+        <div class="row card card-table">
+          <table id="table" class="table">
+            <thead>
+              <tr>
+                <th scope="col" data-field="state">State</th>
+                <th scope="col" data-field="cases">Cases</th>
+                <th scope="col" data-field="todayCases">Today Cases</th>
+                <th scope="col" data-field="deaths">deaths</th>
+                <!-- <th scope="col" data-field="dateUploaded">Date Uploaded</th> -->
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <img src="./src/img/info.png" class="bottom-picture" />
+      <footer>
+        <div class="footer">
+          <div class="add-padding">
+            <p class="credits">Data from</p>
+            <p class="credits">
+              <a href="https://github.com/mathdroid/covid-19-api"
+                ><b>mathdroid/covid-19-api</b>
+              </a>
+            </p>
+            <p class="credits">
+              <a href="covidtracking.com"><b>covidtracking.com</b></a>
+            </p>
+            <p class="credits">
+              <a href="https://corona.lmao.ninja/"><b>corona.lmao.ninja</b></a>
+            </p>
+            <p class="credits">
+              <a href="restcountries.eu"><b>restcountries.eu</b></a>
+            </p>
+            <br />
+            <h6 class="credits">Made by Dilan Ramirez</h6>
+          </div>
+        </div>
+      </footer>
     </div>
 
     <script>
-        $("#countryCard").hide();
-        $("#countryChart").hide();
-        
+      $("#countryCard").hide();
+      $("#countryChart").hide();
 
-        $("#searchCountry").click(function() {
-            fetchData_Country()
-            
-            $("#unitedStates").hide();
-            $("#countryCard").show();
-            $("#unitedStatesChart").show();
-        });
+      $("#searchCountry").click(function () {
+        fetchData_Country();
 
-        $(document).keyup(function(event) {
-            if ($("#inputCountry").is(":focus")) {
-                if (event.keyCode == 13) {
-                $("#searchCountry").click();
-                } 
-            }
-        });
+        $("#unitedStates").hide();
+        $("#countryCard").show();
+        $("#unitedStatesChart").show();
+      });
+
+      $(document).keyup(function (event) {
+        if ($("#inputCountry").is(":focus")) {
+          if (event.keyCode == 13) {
+            $("#searchCountry").click();
+          }
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
