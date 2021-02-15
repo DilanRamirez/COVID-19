@@ -11,4 +11,4 @@ I learned a lot while developing this app. I like the final product with the fin
 
 ## Used
 ![HTML](https://img.icons8.com/color/48/000000/html-5.png){:height="80px" width="80px"}
-
+<img src="https://img.icons8.com/color/48/000000/html-5.png" width="100" height="100">
