@@ -9,4 +9,6 @@ Another reason I wanted to develop this app was because I wanted to learn Bootst
 
 I learned a lot while developing this app. I like the final product with the finish look. The only problem is that sometimes, the app get blocked by one of the APIs and the information is not shown.
 
+## Used
 
+![HTML](https://img.icons8.com/color/48/000000/html-5.png =80x80)
